@@ -1,0 +1,26 @@
+# Entornos
+.venv/
+venv/
+env/
+
+# Secretos
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Artefactos regenerables (python train.py)
+models/*.joblib
+models/metricas.json
+data/*.db
+
+# Logs / SO / IDE
+*.log
+.DS_Store
+.idea/
+.vscode/

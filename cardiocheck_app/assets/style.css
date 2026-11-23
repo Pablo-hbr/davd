@@ -1,0 +1,134 @@
+/* CardioCheck — estilos (mobile first). Dash carga automáticamente la carpeta assets/. */
+
+:root {
+  --rojo: #b71c1c;
+  --rojo-claro: #ffebee;
+  --texto: #263238;
+  --texto-suave: #607d8b;
+  --fondo: #f4f6f8;
+  --borde: #dfe4e8;
+  --radio: 14px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.pagina { max-width: 860px; margin: 0 auto; padding: 0 12px 24px; }
+
+/* Cabecera */
+.cabecera { display: flex; align-items: center; gap: 12px; padding: 18px 4px 12px; }
+.logo {
+  width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--rojo); color: #fff; font-size: 26px; flex-shrink: 0;
+}
+.cabecera h1 { margin: 0; font-size: 1.6rem; color: var(--rojo); }
+.cabecera p { margin: 0; color: var(--texto-suave); font-size: 0.95rem; }
+
+/* Pestañas */
+.pestanas { margin-bottom: 12px; }
+.pestana, .pestana-activa {
+  padding: 10px 4px !important; font-weight: 600; font-size: 0.95rem;
+  border-radius: 10px 10px 0 0 !important;
+}
+.pestana-activa { border-top: 3px solid var(--rojo) !important; color: var(--rojo) !important; }
+
+/* Tarjetas */
+.contenido { display: flex; flex-direction: column; gap: 14px; padding-top: 4px; }
+.tarjeta {
+  background: #fff; border-radius: var(--radio); padding: 18px 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.tarjeta h2 { margin: 0 0 6px; font-size: 1.35rem; }
+.tarjeta h3 { margin: 4px 0 10px; font-size: 1.15rem; }
+.tarjeta h4 {
+  margin: 18px 0 8px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--texto-suave);
+}
+.intro { color: var(--texto-suave); margin: 0 0 10px; }
+.ayuda { color: var(--texto-suave); font-size: 0.85rem; display: block; }
+
+/* Formulario */
+.fila { display: grid; grid-template-columns: 1fr; gap: 0 14px; }
+.campo { margin-bottom: 14px; }
+.campo label { display: block; font-weight: 600; margin-bottom: 6px; }
+/* Dash 4: dcc.Input se envuelve en un contenedor (className) con botones − / +. */
+.entrada { width: 100%; border-radius: 10px; }
+.entrada input { font-size: 16px; padding: 10px 8px; } /* 16px evita el zoom automático en iOS */
+.entrada:focus-within { outline: 2px solid var(--rojo); }
+
+/* Dash 4: cada opción es <label><span><input/></span><span>texto</span></label>. */
+.radio { display: flex; gap: 10px; flex-wrap: wrap; }
+.radio label {
+  display: inline-flex; align-items: center; gap: 8px; margin: 0;
+  padding: 10px 16px; border: 1px solid var(--borde); border-radius: 10px; cursor: pointer;
+  min-width: 96px; background: #fff;
+}
+.radio label:has(input:checked) { border-color: var(--rojo); background: var(--rojo-claro); color: var(--rojo); }
+.radio-opcion { font-weight: 500; }
+.radio-input { accent-color: var(--rojo); width: 18px; height: 18px; margin: 0; }
+
+.opcionales {
+  margin: 8px 0 18px; padding: 12px 14px; border: 1px dashed var(--borde); border-radius: 10px;
+}
+.opcionales summary { cursor: pointer; font-weight: 600; color: var(--rojo); }
+.opcionales[open] summary { margin-bottom: 10px; }
+
+.boton {
+  width: 100%; padding: 15px; font-size: 1.05rem; font-weight: 700; color: #fff;
+  background: var(--rojo); border: none; border-radius: 12px; cursor: pointer;
+}
+.boton:hover { background: #8e1515; }
+
+/* Resultado */
+.resultado { border-top: 6px solid var(--rojo); }
+.resultado.nivel-bajo { border-top-color: #2e7d32; }
+.resultado.nivel-moderado { border-top-color: #ef8f00; }
+.resultado.nivel-alto { border-top-color: #c62828; }
+.resultado-cabecera { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.resultado-porcentaje { font-size: 3rem; font-weight: 800; line-height: 1.1; }
+.etiqueta-nivel {
+  color: #fff; padding: 6px 14px; border-radius: 999px; font-weight: 700; text-transform: uppercase;
+  font-size: 0.85rem; letter-spacing: 0.05em;
+}
+.recomendaciones { padding-left: 20px; margin: 0; }
+.recomendaciones li { margin-bottom: 8px; }
+.aviso-edad {
+  background: #fff8e1; border-left: 4px solid #ef8f00; padding: 10px 12px; border-radius: 8px; margin: 8px 0;
+}
+.errores { border-left: 6px solid var(--rojo); }
+.errores ul { margin: 0; padding-left: 20px; }
+
+.aviso {
+  font-size: 0.88rem; color: #5d4037; background: #fff3e0; border-radius: 10px; padding: 12px 14px;
+}
+
+/* KPIs */
+.kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 8px; }
+.kpi { background: var(--fondo); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; }
+.kpi-valor { font-size: 1.45rem; font-weight: 800; color: var(--rojo); }
+.kpi-etiqueta { font-size: 0.85rem; color: var(--texto-suave); }
+
+/* Tablas */
+.tabla { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 8px; display: block; overflow-x: auto; }
+.tabla th, .tabla td { padding: 8px 6px; border-bottom: 1px solid var(--borde); text-align: left; white-space: nowrap; }
+.tabla th { color: var(--texto-suave); font-weight: 600; }
+
+.pie { text-align: center; color: var(--texto-suave); font-size: 0.8rem; padding: 24px 8px 8px; }
+
+/* Pantallas medianas y grandes */
+@media (min-width: 640px) {
+  .pagina { padding: 0 20px 32px; }
+  .fila { grid-template-columns: 1fr 1fr; }
+  .tarjeta { padding: 24px; }
+  .kpis { grid-template-columns: repeat(4, 1fr); }
+  .tabla { display: table; font-size: 0.92rem; }
+  .boton { width: auto; padding: 14px 36px; }
+}

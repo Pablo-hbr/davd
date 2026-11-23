@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: cardiocheck
+    runtime: python
+    plan: free
+    # El modelo se entrena en el build: así el .joblib siempre coincide con la
+    # versión de scikit-learn instalada en el servidor.
+    buildCommand: pip install -r requirements.txt && python train.py
+    startCommand: gunicorn --timeout 600 app:server
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.8"
