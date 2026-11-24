@@ -75,6 +75,20 @@ def test_sin_escenarios_para_no_fumador_sin_tension(modelos, respuestas_validas)
     assert model.escenarios(modelos, _datos(respuestas_validas)) == []
 
 
+def test_riesgo_optimo_no_supera_el_actual(modelos, respuestas_validas):
+    respuestas_validas.update(sistolica=150, diastolica=95, colesterol=250)
+    datos = _datos(respuestas_validas)
+    assert model.riesgo_optimo(modelos, datos) < model.predecir(modelos, datos)[0]
+
+
+def test_riesgo_similares(datos):
+    prop, n = model.riesgo_similares(datos, 55, 1)
+    assert n > 100 and 0 < prop < 1
+    prop_joven, _ = model.riesgo_similares(datos, 38, 0)
+    assert prop_joven < prop  # mujeres jóvenes: menos eventos que hombres de 55
+    assert model.riesgo_similares(datos, 20, 1)[1] == 0
+
+
 def test_coeficientes_con_sentido_clinico(modelos):
     tabla = model.coeficientes(modelos["completo"], config.VARIANTES["completo"]).set_index("variable")
     for variable in ["age", "male", "cigsPerDay", "sysBP", "prevalentStroke"]:

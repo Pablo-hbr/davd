@@ -45,16 +45,18 @@ def test_recomendaciones(respuestas_validas):
     datos, _, _ = procesar_formulario(respuestas_validas)
     recs = generar_recomendaciones(datos, "alto")
     assert recs[0] == RECOMENDACION_NIVEL["alto"]
-    assert any("fumar" in r for r in recs)
-    assert any("sobrepeso" in r for r in recs)  # IMC 26,8
+    assert all(set(r) == {"icono", "titulo", "texto"} for r in recs)
+    textos = [f"{r['titulo']} {r['texto']}" for r in recs]
+    assert any("fumar" in t for t in textos)
+    assert any("sobrepeso" in t for t in textos)  # IMC 26,8
 
 
 def test_recomendacion_tension_alta(respuestas_validas):
     respuestas_validas.update(sistolica=150, diastolica=95, colesterol=260)
     datos, _, _ = procesar_formulario(respuestas_validas)
-    recs = generar_recomendaciones(datos, "moderado")
-    assert any("150/95" in r for r in recs)
-    assert any("260" in r for r in recs)
+    textos = [r["texto"] for r in generar_recomendaciones(datos, "moderado")]
+    assert any("150/95" in t for t in textos)
+    assert any("260" in t for t in textos)
 
 
 def test_formato_espanol():

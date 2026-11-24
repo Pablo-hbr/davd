@@ -306,3 +306,38 @@ def escenarios(modelos: dict, datos: dict) -> list[dict]:
     for item in salida:
         item["diferencia"] = item["prob"] - actual
     return salida
+
+
+def riesgo_optimo(modelos: dict, datos: dict) -> float:
+    """Riesgo de una persona de la misma edad y sexo con todos los factores modificables en valores óptimos.
+
+    Sirve de referencia ("lo mínimo alcanzable a tu edad"): no fuma, sin hipertensión,
+    diabetes ni ictus, IMC 22 y, si se dieron cifras, tensión 120/80 y colesterol 180.
+    """
+    optimo = {
+        **datos,
+        "currentSmoker": 0,
+        "cigsPerDay": 0,
+        "BPMeds": 0,
+        "prevalentHyp": 0,
+        "diabetes": 0,
+        "prevalentStroke": 0,
+        "BMI": 22.0,
+    }
+    if datos.get("sysBP") is not None:
+        optimo.update(sysBP=120.0, diaBP=80.0)
+    if datos.get("totChol") is not None:
+        optimo["totChol"] = 180.0
+    return predecir(modelos, optimo)[0]
+
+
+def riesgo_similares(df: pd.DataFrame, edad: float, male: int, margen: int = 5) -> tuple[float, int]:
+    """% observado de eventos en personas del estudio del mismo sexo y edad ± margen años.
+
+    Output:
+        (proporción de eventos, número de personas comparables)
+    """
+    grupo = df[(df["male"] == male) & (df["age"].between(edad - margen, edad + margen))]
+    if grupo.empty:
+        return float("nan"), 0
+    return float(grupo[config.TARGET].mean()), int(len(grupo))

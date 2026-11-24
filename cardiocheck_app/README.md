@@ -15,12 +15,13 @@ qué factores han influido y da recomendaciones.
 
 ## Funcionalidades
 
-| Pestaña | Contenido |
+| Sección | Contenido |
 | --- | --- |
-| **Calcular** | Formulario adaptado al móvil, validación con mensajes claros, % de riesgo + nivel (bajo / moderado / alto), velocímetro, factores que han influido, escenarios «¿y si dejaras de fumar?» y recomendaciones |
-| **Datos** | Exploración interactiva del dataset: riesgo observado por edad, sexo, tabaco, tensión, colesterol, IMC… |
-| **Modelo** | Comparación de modelos, métricas, curva ROC, calibración, coeficientes y limitaciones |
-| **Uso** | Estadísticas de las encuestas guardadas en la base de datos |
+| **Calcular** | Portada con efecto *parallax*: al hacer scroll se «encienden» una a una 15 de 100 figuras de personas (las que tuvieron un evento en el estudio) y un botón lleva a la calculadora. Formulario por pasos adaptado al móvil (IMC en vivo, preguntas que aparecen solo si aplican, validación con mensajes claros). Resultado con % de riesgo y nivel, escala de colores, matriz de 100 personas («de cada 100 personas como tú…»), comparación con tu riesgo con factores óptimos y con personas de tu edad y sexo del estudio, factores que más pesan, escenarios «¿y si dejaras de fumar?» y recomendaciones |
+| **Explorar datos** | Indicadores del estudio y riesgo observado por edad, sexo, tabaco, tensión, colesterol, IMC… |
+| **El modelo** | Cómo funciona, comparación de modelos, métricas, curva ROC, calibración, coeficientes y limitaciones |
+
+Cada cálculo se guarda de forma anónima en la base de datos SQLite (tabla `encuestas`).
 
 ## Datos
 
@@ -57,7 +58,7 @@ cardiocheck_app/
 │   ├── graphics.py        # Figuras Plotly
 │   ├── db.py              # Guardado / lectura de encuestas
 │   └── formato.py         # Números en formato español
-├── assets/style.css       # Estilos (mobile first)
+├── assets/                # style.css (mobile first), parallax.js (portada) y logo.svg
 ├── tests/                 # pytest
 ├── requirements.txt · requirements-dev.txt · Procfile · render.yaml · .python-version
 └── data/raw/framingham.csv
