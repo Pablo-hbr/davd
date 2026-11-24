@@ -17,7 +17,9 @@ qué factores han influido y da recomendaciones.
 
 | Sección | Contenido |
 | --- | --- |
-| **Calcular** | Portada con efecto *parallax*: al hacer scroll se «encienden» una a una 15 de 100 figuras de personas (las que tuvieron un evento en el estudio) y un botón lleva a la calculadora. Formulario por pasos adaptado al móvil (IMC en vivo, preguntas que aparecen solo si aplican, validación con mensajes claros). Resultado con % de riesgo y nivel, escala de colores, matriz de 100 personas («de cada 100 personas como tú…»), comparación con tu riesgo con factores óptimos y con personas de tu edad y sexo del estudio, factores que más pesan, escenarios «¿y si dejaras de fumar?» y recomendaciones |
+| **Portada** | Efecto *parallax*: al hacer scroll se «encienden» 15 de 100 figuras de personas (las que tuvieron un evento en el estudio) y un botón lleva a la calculadora. El menú aparece al terminar la animación |
+| **Calcular** | Formulario por pasos adaptado al móvil (IMC en vivo, preguntas que solo aparecen si aplican, validación con mensajes claros) |
+| **Resultado** | % de riesgo y nivel, escala de colores, matriz «de cada 100 personas como tú…», comparación con tu riesgo con factores óptimos y con personas de tu edad y sexo, factores que más pesan, escenarios «¿y si…?» y recomendaciones |
 | **Explorar datos** | Indicadores del estudio y riesgo observado por edad, sexo, tabaco, tensión, colesterol, IMC… |
 | **El modelo** | Cómo funciona, comparación de modelos, métricas, curva ROC, calibración, coeficientes y limitaciones |
 
@@ -85,12 +87,18 @@ Variable de entorno opcional: `CARDIOCHECK_DB` (ruta de la base de datos SQLite;
 
 ## Despliegue en Render
 
-1. Sube el proyecto a GitHub (con `.gitignore`: no se suben `.venv`, la BD ni los modelos).
-2. En Render: **New → Blueprint** (detecta `render.yaml`) o **New → Web Service** con:
-   - Build command: `pip install -r requirements.txt && python train.py`
-   - Start command: `gunicorn --timeout 600 app:server`
-   - Si la app está en una subcarpeta del repositorio, indica esa carpeta en **Root Directory**.
-3. Los modelos se entrenan durante el build, así siempre coinciden con la versión de scikit-learn del servidor.
+La app está desplegada como **Web Service** de Render conectado a este repositorio; cada `git push` a `main` la
+vuelve a desplegar. Configuración:
+
+| Campo | Valor |
+| --- | --- |
+| Root Directory | `cardiocheck_app` |
+| Build Command | `pip install -r requirements.txt && python train.py` |
+| Start Command | `gunicorn --timeout 600 app:server` |
+| Variable de entorno | `PYTHON_VERSION = 3.12.8` |
+
+Los modelos se entrenan durante el build, así siempre coinciden con la versión de scikit-learn del servidor
+(`render.yaml` recoge la misma configuración).
 
 ⚠️ En el plan gratuito de Render el disco no es persistente: las encuestas guardadas en SQLite se pierden en cada
 redespliegue o reinicio. Para conservarlas habría que usar una base de datos gestionada (p. ej. PostgreSQL).
@@ -138,14 +146,16 @@ Saber las cifras de tensión y colesterol apenas mejora el AUC global, pero sí 
 
 ## Plan de trabajo
 
-- [x] Propuesta (entrega 1)
-- [x] Selección del dataset (BRFSS 2015 frente a Framingham) y análisis exploratorio
-- [x] Modelo, evaluación y explicabilidad
-- [x] App Dash: formulario, resultado, exploración de datos, modelo y uso
-- [x] Base de datos SQLite (datos + encuestas) y tests
-- [ ] Despliegue en Render
-- [ ] Base de datos persistente para las encuestas
-- [ ] Presentación
+| Fase | Contenido | Estado |
+| --- | --- | --- |
+| 1. Propuesta | Idea, motivación y visión técnica (entrega 1) | ✅ Hecho |
+| 2. Datos | Comparación de BRFSS 2015 y Framingham; elección de Framingham | ✅ Hecho |
+| 3. Modelo | Regresión logística en 4 variantes, evaluación y explicación de cada predicción | ✅ Hecho |
+| 4. App | Dash: portada con *parallax*, calculadora, exploración de datos y modelo | ✅ Hecho |
+| 5. Calidad | Base de datos SQLite, tests con pytest y documentación | ✅ Hecho |
+| 6. Despliegue | Render, con entrenamiento del modelo en el build | ✅ Hecho |
+| 7. Mejoras | Base de datos persistente (PostgreSQL) para no perder las encuestas | Pendiente |
+| 8. Presentación | Exposición de 5 minutos + 2 de preguntas | Pendiente |
 
 ## Uso de IA
 
